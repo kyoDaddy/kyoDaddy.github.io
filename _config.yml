@@ -29,7 +29,7 @@ email: rlarbghrbgh@gmail.com
 author: kyoDaddy
 copyright: Copyright © 2021
 description: >- # this means to ignore newlines until "baseurl:"
-  틈틈히 살면서 생기는 관심사를 기록하겠습니다!
+  살면서 생기는 관심사 기록
 
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://kyoDaddy.github.io/" # the base hostname & protocol for your site, e.g. http://example.com
