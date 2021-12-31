@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Too many open files" error 발생시
+title:  "Too many open files error 발생시"
 date:   2021-12-28 10:00
 categories: archives
 tags: linux
