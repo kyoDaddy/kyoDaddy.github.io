@@ -3,7 +3,7 @@ layout: post
 title:  "linux random entropy 부족시"
 date:   2021-12-28 10:00
 categories: archives
-tags: linux
+tags: linux openstack
 ---
 ## linux random entropy 부족시
 오픈스택에서 톰캣을 실행시키는데 한참이 걸려서, 이유가 무엇인지 찾다가 stackoverflow에서 찾았다...
