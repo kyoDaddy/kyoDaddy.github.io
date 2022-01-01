@@ -3,7 +3,7 @@ layout: post
 title:  "sourcetree authentication failed 발생시"
 date:   2022-01-01 22:00
 categories: archives
-tags: linux aws
+tags: tool
 ---
 ## Athentication failed error 발생시
 
