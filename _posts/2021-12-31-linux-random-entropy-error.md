@@ -3,7 +3,7 @@ layout: post
 title:  "Too many open files error 발생시"
 date:   2021-12-31 10:00
 categories: archives
-tags: linux aws
+tags: linux aws solution
 ---
 ## "Too many open files" error 발생시
 

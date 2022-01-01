@@ -3,7 +3,7 @@ layout: post
 title:  "sourcetree authentication failed 발생시"
 date:   2022-01-01 22:00
 categories: archives
-tags: tool
+tags: tool solution
 ---
 ## Athentication failed error 발생시
 
