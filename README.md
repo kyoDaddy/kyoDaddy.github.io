@@ -4,7 +4,7 @@
 </div>
 
 <p align="center">
-  <a href="https://kyodaddy.github.io/">
+  <a href="https://kyodaddy.github.io/" target="_blank">
     <img src="https://github.com/jeffreytse/jekyll-theme-yat/workflows/Github%20Pages/badge.svg"
       alt="Github Pages" />
   </a>
