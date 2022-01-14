@@ -1,6 +1,8 @@
 <div align="center">
   <br>
-  <h1>기록 더하기</h1>
+  <a href="https://kyodaddy.github.io/">
+    <h1>기록 더하기</h1>
+  </a>
 </div>
 
 <p align="center">
