@@ -1,12 +1,10 @@
 <div align="center">
   <br>
-  <a href="https://kyodaddy.github.io/">
-    <h1>기록 더하기</h1>
-  </a>
+  <h1>기록 더하기</h1>
 </div>
 
 <p align="center">
-  <a href="https://github.com/kyoDaddy">
+  <a href="https://kyodaddy.github.io/">
     <img src="https://github.com/jeffreytse/jekyll-theme-yat/workflows/Github%20Pages/badge.svg"
       alt="Github Pages" />
   </a>
