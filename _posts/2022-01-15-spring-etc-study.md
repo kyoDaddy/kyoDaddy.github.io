@@ -3,7 +3,7 @@ layout: post
 title:  "spring 관련 자주 참고하는 정보 모음"
 date:   2022-01-15 11:00
 categories: archives
-tags: log4j log4j2 solution
+tags: spring study
 ---
 
 ## redirect vs forward 
