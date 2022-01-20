@@ -1,9 +1,9 @@
 ---
 layout: post
-title:  "쉘 작성의 기억"
+title:  "쉘스크립트 샘플 남겨두기"
 date:   2022-01-21 07:48
 categories: archives
-tags: linux shell
+tags: linux shell cron
 ---
 
 프로젝트로 띄울 정도는 아니었어서, 아주 예전 기억을 찾아서 기록한다.
