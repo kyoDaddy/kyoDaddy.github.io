@@ -35,16 +35,17 @@ Front Controller Pattern을 도입하면 이런 문제를 해결할 수 있다. 
 0. RequestMappingHandlerMapping : 애노테이션 기반의 컨트롤러의 @RequestMapping에서 사용
 1. BeanNameUrlHandlerMapping : 스프링 빈의 이름으로 핸들러를 찾는다.
 
-## HandlerAdapter 우선 순위 - HandlerMapping 후 전달 받은 Handler가 존재해야함
-0. RequestMappingHandlerAdapter : 애노테이션 기반의 컨트롤러의 @RequestMapping에서 사용
-1. HttpRequestHandlerAdapter : HttpRequestFilter 처리
-2. SimpleControllerHandlerAdapter : Controller 인터페이스(애너테이션x, 과거에 사용) 처리
+## HandlerAdapter 우선 순위
+0. HandlerMapping 후 전달 받은 Handler가 존재해야함
+1. RequestMappingHandlerAdapter : 애노테이션 기반의 컨트롤러의 @RequestMapping에서 사용
+2. HttpRequestHandlerAdapter : HttpRequestFilter 처리
+3. SimpleControllerHandlerAdapter : Controller 인터페이스(애너테이션x, 과거에 사용) 처리
 
 ## spring boot 기본 제공 로깅
 - 인터페이스 slf4j, 구현체 logback
 - spring-starter-logging 내 존재
-- +가 아닌 format 으로 사용해야 연산이 발생하지 않는다.
 ```java
+// +가 아닌 format 으로 사용해야 연산이 발생하지 않는다.
 // log.trace("test"+ "1"); // 노출되지 않아도 연산됨
 // log.trace("trace{}", 1); // 연산 발생하지 않음
 ```
@@ -52,6 +53,29 @@ Front Controller Pattern을 도입하면 이런 문제를 해결할 수 있다. 
 - server 입장에서 생각하면 됨
 - consume : server 가 소비할 형식 (client 기준 Content-Type)
 - produces : server 가 생산할 형식 (client 기준 Accept)
+
+## spring boot default message-converter
+- 대상 클래스 타입과 미디어 타입 둘을 체크해서 사용여부를 결정한다. 아래 우선순위에 해당하지 않으면 탈락!
+- 요청 시점 ArgumentResolver && 응답 시점 ReturnValueHandler에서 호출됨
+0. ByteArrayHttpMessageConverter
+```java
+// 클래스 타입: byte[] , 미디어타입: */*
+// 요청 예) @RequestBody byte[] data
+// 응답 예) @ResponseBody return byte[] 쓰기 미디어타입 application/octet-stream
+```
+2. StringHttpMessageConverter
+```java
+//클래스 타입: String , 미디어타입: */*
+//요청 예) @RequestBody String data
+//응답 예) @ResponseBody return "ok" 쓰기 미디어타입 text/plain
+```
+3. MappingJackson2HttpMessageConverter
+```java
+//클래스 타입: 객체 또는 HashMap , 미디어타입 application/json 관련
+//요청 예) @RequestBody HelloData data
+//응답 예) @ResponseBody return helloData 쓰기 미디어타입 application/json 관련
+```
+
 
 
 ## 효율적인 구조 개선 (리팩토링) 방안
