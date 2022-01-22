@@ -7,15 +7,15 @@ tags: linux aws deploy shell cron
 ---
 git을 통해 s3에 업로드 후에, 
 개발 인스턴스에 가져와 실행시키는 부분을 샘플링 해서 남겨둔다.
-다음번에는 codedeploy를 사용하면.. 개발 쪽 배포 구성을 좀 더 심플하게 할 수 있지 않을까??s
+다음번에는 codedeploy를 사용하면.. 개발 쪽 배포 구성을 좀 더 심플하게 할 수 있지 않을까??
 
 ## Update Package Manager
-```shell
+```
 $ sudo yum -y update
 ```
 
 ## Install Java (openjdk-11)
-```shell
+```shll
 $ sudo amazon-linux-extras install java-openjdk11
 ```
 
@@ -23,7 +23,7 @@ $ sudo amazon-linux-extras install java-openjdk11
 - 관리형 S3 에서 파일을 가져오기 위해서 설정 필요
 - default profile 설정
 - 필요시 별도 profile 설정 필요
-```shell
+```
 $ sudo aws configure set default.aws_access_key_id ${AWS Access Key ID}
 $ sudo aws configure set default.aws_secret_access_key ${AWS Secret Access Key}
 $ sudo aws configure set default.region ap-northeast-2
@@ -35,7 +35,7 @@ $ sudo aws configure set default.output json
 - /sample/app : application 소스 파일 위치
 - /sample/log : application 로그 파일 위치
 - /sample/script : 운영을 위해 필요한 스크립트들
-```shell
+```
 $ sudo mkdir /sample
 $ cd /sample
 $ sudo ln -s /etc/alternatives/jre_11 jre
@@ -51,7 +51,7 @@ $ sudo ln -s /var/log/sample log
 ```
 
 ## aws 업로드한 환경변수 파일 다운로드
-```shell
+```
 $ sudo aws s3 cp s3://{test|live}-sample/ops-scripts/env/sample-api/{test|live}-sample-api-env /etc/default/sample/sample-api
 
 $ cat /etc/default/sample/sample-api
@@ -64,7 +64,7 @@ jvm_opts="-Dfile.encoding=UTF-8 -Duser.timezone=GMT+09:00 -Denv=dev -Dspring.pro
 ```
 
 ## boot 스크립트 init.d 등록
-```shell
+```
 $ sudo aws s3 cp s3://{test|live}-sample/ops-scripts/java/sample-api/sample-api.sh /sample/script/sample-api.sh
 $ sudo sed -i -e 's/\r$//' /sample/script/sample-api.sh
 
@@ -278,7 +278,7 @@ You have mail in /var/spool/mail/root
 ```
 
 ## 최신소스 업데이트
-```shell
+```
 $ sudo aws s3 cp s3://{test|live}-sample/ops-scripts/java/sample-api/s3-sync-sample-api.sh /sample/script/s3-sync-sample-api.sh
 $ sudo chmod +x /sample/script/s3-sync-sample-api.sh
 $ sudo sed -i -e 's/\r$//' /sample/script/s3-sync-sample-api.sh
@@ -309,7 +309,7 @@ fi
 ```
 
 ## 실행 명령
-```shell
+```
 $ sudo service sample-api stop
 $ sudo service sample-api start
 $ sudo service sample-api restart
@@ -317,7 +317,7 @@ $ sudo service sample-api status
 ```
 
 ## Application AutoScale 대상 Deploy 스크립트 추가
-```shell
+```
 $ sudo aws s3 cp s3://{test|live}-sample/sample/sample-api/recently/sample-api-recently.jar /sample/app/sample-api/sample-api.jar --profile=default
 $ sudo service sample-api restart
 ```
