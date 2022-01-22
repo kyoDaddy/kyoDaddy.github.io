@@ -1,12 +1,12 @@
 ---
 layout: post
-title:  "aws/spring 환경에서 개발 인스턴스 초기 배포 구성 샘플 남겨두기"
+title:  "개발 인스턴스 s3 소스 동기화 구성"
 date:   2022-01-22 22:33
 categories: archives
 tags: linux aws deploy shell cron
 ---
 git을 통해 s3에 업로드 후에, 
-개발 인스턴스에 가져와 실행시키는 부분을 샘플링 해서 남겨둔다. (사용 해봤던 걸 남겨둔 것)   
+개발 인스턴스에 가져와 실행시키는 부분을 샘플링 해서 남겨둔다.
 다음번에는 codedeploy를 사용하면.. 개발 쪽 배포 구성을 좀 더 심플하게 할 수 있지 않을까??s
 
 ## Update Package Manager

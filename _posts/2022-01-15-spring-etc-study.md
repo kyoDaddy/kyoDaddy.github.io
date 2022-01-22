@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "spring 관련 자주 참고하는 정보 모음"
+title:  "spring 관련 자주 참고하는 정보등.."
 date:   2022-01-15 11:00
 categories: archives
 tags: spring study

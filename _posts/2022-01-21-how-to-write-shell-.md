@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "쉘스크립트 샘플 남겨두기"
+title:  "리눅스 쉘스크립트 & 크론 사용법"
 date:   2022-01-21 07:48
 categories: archives
 tags: linux shell cron
