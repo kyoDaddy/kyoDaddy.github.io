@@ -10,12 +10,12 @@ git을 통해 s3에 업로드 후에,
 다음번에는 codedeploy를 사용하면.. 개발 쪽 배포 구성을 좀 더 심플하게 할 수 있지 않을까??
 
 ## Update Package Manager
-```
+```text
 $ sudo yum -y update
 ```
 
 ## Install Java (openjdk-11)
-```shll
+```text
 $ sudo amazon-linux-extras install java-openjdk11
 ```
 
@@ -23,7 +23,7 @@ $ sudo amazon-linux-extras install java-openjdk11
 - 관리형 S3 에서 파일을 가져오기 위해서 설정 필요
 - default profile 설정
 - 필요시 별도 profile 설정 필요
-```
+```text
 $ sudo aws configure set default.aws_access_key_id ${AWS Access Key ID}
 $ sudo aws configure set default.aws_secret_access_key ${AWS Secret Access Key}
 $ sudo aws configure set default.region ap-northeast-2
@@ -35,7 +35,7 @@ $ sudo aws configure set default.output json
 - /sample/app : application 소스 파일 위치
 - /sample/log : application 로그 파일 위치
 - /sample/script : 운영을 위해 필요한 스크립트들
-```
+```text
 $ sudo mkdir /sample
 $ cd /sample
 $ sudo ln -s /etc/alternatives/jre_11 jre
@@ -51,7 +51,7 @@ $ sudo ln -s /var/log/sample log
 ```
 
 ## aws 업로드한 환경변수 파일 다운로드
-```
+```text
 $ sudo aws s3 cp s3://{test|live}-sample/ops-scripts/env/sample-api/{test|live}-sample-api-env /etc/default/sample/sample-api
 
 $ cat /etc/default/sample/sample-api
@@ -64,7 +64,7 @@ jvm_opts="-Dfile.encoding=UTF-8 -Duser.timezone=GMT+09:00 -Denv=dev -Dspring.pro
 ```
 
 ## boot 스크립트 init.d 등록
-```
+```text
 $ sudo aws s3 cp s3://{test|live}-sample/ops-scripts/java/sample-api/sample-api.sh /sample/script/sample-api.sh
 $ sudo sed -i -e 's/\r$//' /sample/script/sample-api.sh
 
@@ -274,11 +274,10 @@ case "${command}" in
   *) usage_service ;;
 esac
 You have mail in /var/spool/mail/root
-
 ```
 
 ## 최신소스 업데이트
-```
+```text
 $ sudo aws s3 cp s3://{test|live}-sample/ops-scripts/java/sample-api/s3-sync-sample-api.sh /sample/script/s3-sync-sample-api.sh
 $ sudo chmod +x /sample/script/s3-sync-sample-api.sh
 $ sudo sed -i -e 's/\r$//' /sample/script/s3-sync-sample-api.sh
@@ -300,16 +299,15 @@ if [[ $sync_file_count>0 ]]; then
 else
   echo "Already up to date."
 fi
-
 ```
 
 ## cron
-```
+```text
 * * * * * sh /sample/script/s3-sync-sample-api.sh s3://deploy/sample/sample-api/ /sample/app/sample-api/
 ```
 
 ## 실행 명령
-```
+```text
 $ sudo service sample-api stop
 $ sudo service sample-api start
 $ sudo service sample-api restart
@@ -317,7 +315,7 @@ $ sudo service sample-api status
 ```
 
 ## Application AutoScale 대상 Deploy 스크립트 추가
-```
+```text
 $ sudo aws s3 cp s3://{test|live}-sample/sample/sample-api/recently/sample-api-recently.jar /sample/app/sample-api/sample-api.jar --profile=default
 $ sudo service sample-api restart
 ```
