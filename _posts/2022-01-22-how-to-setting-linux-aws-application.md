@@ -23,9 +23,10 @@ $ sudo amazon-linux-extras install java-openjdk11
 - 관리형 S3 에서 파일을 가져오기 위해서 설정 필요
 - default profile 설정
 - 필요시 별도 profile 설정 필요
+ 
 ```text
-$ sudo aws configure set default.aws_access_key_id ${AWS Access Key ID}
-$ sudo aws configure set default.aws_secret_access_key ${AWS Secret Access Key}
+$ sudo aws configure set default.aws_access_key_id AWS-Access-Key-ID
+$ sudo aws configure set default.aws_secret_access_key AWS-Secret-Access-Key
 $ sudo aws configure set default.region ap-northeast-2
 $ sudo aws configure set default.output json
 ```  
