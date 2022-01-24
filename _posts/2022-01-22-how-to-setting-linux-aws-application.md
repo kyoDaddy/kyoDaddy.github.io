@@ -36,17 +36,18 @@ $ sudo aws configure set default.output json
 - /sample/app : application 소스 파일 위치
 - /sample/log : application 로그 파일 위치
 - /sample/script : 운영을 위해 필요한 스크립트들
+
 ```text
 $ sudo mkdir /sample
 $ cd /sample
 $ sudo ln -s /etc/alternatives/jre_11 jre
- 
+
 $ sudo mkdir -p /etc/default/sample
 $ sudo ln -s /etc/default/sample env
- 
+
 $ sudo mkdir -p /srv/www/sample
 $ sudo ln -s /srv/www/sample app
- 
+
 $ sudo mkdir -p /var/log/sample
 $ sudo ln -s /var/log/sample log
 ```
