@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "개발 인스턴스 s3 소스 동기화 구성"
+title:  "리눅스 쉘스크립트 & 크론 사용법 (2) - 개발 인스턴스 s3 소스 동기화 구성"
 date:   2022-01-22 22:33
 categories: archives
 tags: linux aws deploy shell cron
