@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "install docker mariadb"
+title:  "docker 개인pc에서 자주 사용하는 명령어 모음"
 date:   2022-01-26 12:33
 categories: archives
 tags: docker mariadb
