@@ -18,10 +18,13 @@ tags: mysql etc
   - 데이터베이스에 접근하고 객체들을 사용하도록 권한을 주고 회수하는 명령
   - GRANT, REVOKE
 
+
+
 ## UML
 프로그램 설계를 표현하기 위해 사용하는 그림으로 된 표기법
 이해하기 힘든 복잡한 시스템을 의사소통하기 위해 만듬
 난 주로 draw.io 사용..
+
 
 ## VIEW
 허용된 데이터를 제한적으로 보여주기 위한 것
@@ -29,11 +32,14 @@ tags: mysql etc
 - 사용자가 view에 접근했을 때 해당하는 데이터를 원본에서 가져온다.
 - view에 나타나지 않은 데이터를 간편히 보호할 수 있는 장점 존재
 
+
 ## 정규화
 중복을 최대한 줄여 데이터를 주조화하고, 불필요한 데이터를 제거해 데이터를 논리적으로 저장하는 것
 
+
 ## 이상현상
 릴레이션에서 일부 속성들의 종속으로 인해 데이터 중복이 발생하는 것 (insert, update, delete)
+
 
 ## 데이터베이스 무결성
 테이블에 있는 모든 행들이 유일한 식별자를 가질 것을 요구함 (같은 값 아님)
@@ -42,14 +48,7 @@ tags: mysql etc
 - 무결성 보장 (데이터 설계시 가장 중요한 것 중 하나)
 데이터를 조작하는 프로그램 내에서 데이터 생성, 수정, 삭제 시 무결성 조건을 검증한다.
 
-## Commit
-하나의 논리적 단위(트랜잭션)에 대한 작업이 성공적으로 끝났을때, 
-이 트랜잭션이 수행한 갱신 연산이 완료된 것을 트랜잭션 관리자에게 알려주는 연산
-
-## Rollback
-하나의 트랜잭션 처리가 비정상적으로 종료되어 DB의 일관서을 깨뜨렸을 떄, 모든 연산을 취소시키는 연산
-- 트랜잭션이 정상적으로 종료되지 않았을때, last consistent state 로 rollback 할 수 있음 
-
+  
 ## 트랜잭션
 데이터 베이스의 상태를 변화시키키 위해 수행하는 작업 단위
 - 원자성 (Atomicity) : 트랜잭션이 db에 모두 반영되거나, 혹은 전혀 반영되지 않아야 된다.
@@ -57,6 +56,14 @@ tags: mysql etc
 - 독립성 (Isolation) : 둘 이상의 트랜잭션이 동시에 병행 실행되고 있을 때, 어떤 트랜잭션도 다른 트랜잭션 연산에 끼어들 수 없다.
 - 지속성 (Durability) : 트랜잭션이 성공적으로 완료되었으면, 결과는 영구적으로 반영되어야 한다.
 
+## Commit
+하나의 논리적 단위(트랜잭션)에 대한 작업이 성공적으로 끝났을때,
+이 트랜잭션이 수행한 갱신 연산이 완료된 것을 트랜잭션 관리자에게 알려주는 연산
+
+
+## Rollback
+하나의 트랜잭션 처리가 비정상적으로 종료되어 DB의 일관서을 깨뜨렸을 떄, 모든 연산을 취소시키는 연산
+- 트랜잭션이 정상적으로 종료되지 않았을때, last consistent state 로 rollback 할 수 있음
 
 
 ## 데이터베이스 인덱스
@@ -100,6 +107,7 @@ GROUP BY
 ORDER BY
   HOUR
 ```
+
 
 ## group concat 사용 예시
 ```mysql
@@ -154,6 +162,7 @@ GROUP BY
 X.EVENT_TYPE
 ```
 
+
 ## union all 사용 예시
 매치업 결과 나타내기 
 ```mysql
@@ -200,6 +209,7 @@ ORDER BY
 	num_points desc, X.team_id 
 ```
 
+
 ## function, dense_rank 사용 예시
 - RANK 공동 순위만큼 건너뜀 (ex: 1,2,2,4 ...) 
 - DENSE_RANK 공동 순위를 뛰어넘지 않음 (ex: 1,2,2,3 ...) 
@@ -234,6 +244,7 @@ where X.rankNo = 3
 */
 ```
 
+
 ## self join, LEAD() over (), LAG() over() 사용 예시
 세번 연달아 동일한 숫자가 존재할 경우의 숫자 출력 
 ```mysql
@@ -262,6 +273,7 @@ X
 where X.num = X.nxt and X.nxt = X.nxt2
 ```
 
+
 ## dense_rank() over (poartion by ... order by) 사용 예시
 그룹별 최상의 인원 뽑기
 dese_rank 중복된 랭크 이후 넘버링을 안띄어넘고 붙여서 감
@@ -286,6 +298,7 @@ X.departmentId = D.id
 AND X.rank < 4
 ;
 ```
+
 
 ## 조건에 따라서 결과를 만들어 내기 (질문의 파악을 잘해야함..)
 주어진 일자 내 블랙리스트 회원,강사가 아닌 예약 건 중 취소율을 구해라.
@@ -312,6 +325,7 @@ FROM
 )
 X
 ```
+
 사용자 첫 로그인시점 바로 다음날 재접속한 사람들을 파악해서 전체 접속률 을 소수점 2번째 자리로 구해
 ```mysql
 SELECT
@@ -332,6 +346,7 @@ WHERE
         C.player_id
     )
 ```
+
 회사별 급여의 중간 값을 구하라. (totalCnt/2 and totalCnt/2+1)
 ```mysql
 SELECT 
@@ -380,6 +395,7 @@ where (player_id, event_date) in (
                                  ) 
 ```
 
+
 ## sum() over(partition by .. order by ..) 사용 예시
 사용자 행별 누적 플레이 포인트 값
 ```mysql
@@ -389,6 +405,7 @@ select
 games_played_so_far
 from Activity;
 ```
+
 
 ## count() over(partition by ..) 사용 예시
 회사별 보고서를 5명이상에게 받는 매니저 추출
@@ -421,7 +438,6 @@ where id in
 ```
 
 
-
 ## PIVOT 사용 예시
 ```mysql
 SELECT 
@@ -432,10 +448,5 @@ FROM (
 PIVOT ( 
     COUNT(snsType) FOR snsType IN ([K],[N],[F]) 
 ) AS pivot_result
-
 ```
-
-
-## 참고
-1. []()
 
