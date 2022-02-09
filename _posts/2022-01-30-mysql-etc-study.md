@@ -1239,6 +1239,219 @@ from
 ) X
 ```
 
+학과 테이블에 있는 모든 학과의 전공명 및 학생 수 추출
+```mysql
+create table if not exists Student (student_id int, student_name varchar(255), gender varchar(1), dept_id int);
+truncate table Student;
+insert into Student (student_id, student_name, gender, dept_id) values (1, 'Jack', 'M', 1);
+insert into Student (student_id, student_name, gender, dept_id) values (2, 'Jane', 'F', 1);
+insert into Student (student_id, student_name, gender, dept_id) values (3, 'Mark', 'M', 2);
+
+create table if not exists Department (dept_id int, dept_name varchar(255));
+truncate table Department;
+insert into Department (dept_id, dept_name) values (1, 'Engineering');
+insert into Department (dept_id, dept_name) values (2, 'Science');
+insert into Department (dept_id, dept_name) values (3, 'Law');
+
+select
+    d.dept_name, ifnull(count(s.dept_id), 0) as student_number
+from
+    Department d left outer join Student s using(dept_id)
+group by
+    d.dept_name
+order by
+    student_number desc
+```
+
+가장 많은 친구를 가진 사람
+```mysql
+create table if not exists RequestAccepted (requester_id int, accepter_id int, accepter_date date);
+truncate table RequestAccepted;
+insert into RequestAccepted (requester_id, accepter_id, accepter_date) values (1, 2, '2016/06/03');
+insert into RequestAccepted (requester_id, accepter_id, accepter_date) values (1, 3, '2016/06/08');
+insert into RequestAccepted (requester_id, accepter_id, accepter_date) values (2, 3, '2016/06/08');
+insert into RequestAccepted (requester_id, accepter_id, accepter_date) values (3, 4, '2016/06/09');
+
+select X.id, count(1) as num
+from
+(
+    select accepter_id as id from RequestAccepted
+    union all
+    select requester_id as id from RequestAccepted
+) X
+group by X.id
+order by num desc
+limit 0, 1  
+```
+
+각 노드의 유형 추출
+```mysql
+create table if not exists Tree (id int, p_id int);
+truncate table Tree;
+insert into Tree(id, p_id) values (1, null);
+insert into Tree(id, p_id) values (2, 1);
+insert into Tree(id, p_id) values (3, 1);
+insert into Tree(id, p_id) values (4, 2);
+insert into Tree(id, p_id) values (5, 2);
+
+select
+    t.id,
+    t.p_id,
+    case when t.p_id is null then 'Root'
+    when (select count(sub.p_id) from Tree sub where sub.p_id = t.id) > 0 then 'Inner'
+    else 'Leaf' end as type
+from
+    Tree t
+```
+
+한명 이상의 팔로잉을 하고, 한명 이상의 팔로우가 존재하는 사람의 이름과 팔로우수
+```mysql
+create table if not exists Follow(followee varchar(255), follower varchar(255));
+truncate table Follow;
+insert into Follow(followee, follower) values ('Alice', 'Bob');
+insert into Follow(followee, follower) values ('Bob', 'Cena');
+insert into Follow(followee, follower) values ('Bob', 'Donald');
+insert into Follow(followee, follower) values ('Donald', 'Edward');
+
+select *
+from
+(
+    select followee as follower, count(*) as num
+    from Follow
+    group by followee
+    having num > 0
+) X
+where X.follower in (select follower from Follow group by follower having count(1) > 0)
+order by X.follower
+;
+
+SELECT followee as follower, count(follower) as num
+FROM Follow
+WHERE followee in (select distinct follower from Follow)
+GROUP BY followee
+ORDER BY follower
+```
+
+연속된 두 학생의 시트 ID를 교환하고 학생 숭가 홀수 일 경우 마지막 학생의 ID는 미교환
+```mysql
+create table if not exists Seat (id int, name varchar(255));
+truncate table Seat;
+
+insert into Seat(id, name) values (1, 'Abbot');
+insert into Seat(id, name) values (2, 'Doris');
+insert into Seat(id, name) values (3, 'Emerson');
+insert into Seat(id, name) values (4, 'Green');
+insert into Seat(id, name) values (5, 'James');
+
+insert into Seat(id, name) values (1, 'Abbot');
+insert into Seat(id, name) values (2, 'Doris');
+insert into Seat(id, name) values (3, 'Emerson');
+insert into Seat(id, name) values (4, 'Green');
+insert into Seat(id, name) values (5, 'James');
+insert into Seat(id, name) values (6, 'Julia');
+
+select
+    s1.id,
+    case when s1.id%2 = 0 then s3.name
+         else ifnull(s2.name, s1.name)
+    end as student
+from
+    Seat s1
+    left join Seat s2 on s1.id = s2.id-1
+    left join Seat s3 on s3.id = s1.id-1
+order by
+    s1.id
+```
+
+모든 제품을 구매한 고객 ID 추출
+```mysql
+create table if not exists Customer (customer_id int, product_key int);
+truncate table Customer;
+insert into Customer (customer_id, product_key) values (1, 5);
+insert into Customer (customer_id, product_key) values (2, 6);
+insert into Customer (customer_id, product_key) values (3, 5);
+insert into Customer (customer_id, product_key) values (3, 6);
+insert into Customer (customer_id, product_key) values (1, 6);
+
+create table if not exists Product (product_key int);
+truncate table Product;
+insert into Product (product_key) values (5);
+insert into Product (product_key) values (6);
+
+select customer_id
+from Customer
+group by customer_id
+having count(distinct product_key) = (select count(distinct product_key) from Product)
+```
+
+2019-06-23 현재일자 기준 1개월 미만 책을 제외하고, 지난해부터 현재까지 10권 미만 판매된 책 보고
+```mysql
+create table if not exists Books(book_id int, `name` varchar(255), available_from date);
+truncate table Books;
+insert into Books (book_id, name, available_from) values (1, 'Kalia And Demna', '2010-01-01');
+insert into Books (book_id, name, available_from) values (2, '28 Letters', '2012-05-12');
+insert into Books (book_id, name, available_from) values (3, 'The Hobbit', '2019-06-10');
+insert into Books (book_id, name, available_from) values (4, '13 Reasons Why', '2019-06-01');
+insert into Books (book_id, name, available_from) values (5, 'The Hunger Games', '2008-09-21');
+
+create table if not exists Orders(order_id int, book_id int, quantity int, dispatch_date date);
+truncate table Orders;
+insert into Orders (order_id, book_id, quantity, dispatch_date) values (1, 1, 2, '2018-07-26');
+insert into Orders (order_id, book_id, quantity, dispatch_date) values (2, 1, 1, '2018-11-26');
+insert into Orders (order_id, book_id, quantity, dispatch_date) values (3, 3, 8, '2019-06-11');
+insert into Orders (order_id, book_id, quantity, dispatch_date) values (4, 4, 6, '2019-06-05');
+insert into Orders (order_id, book_id, quantity, dispatch_date) values (5, 4, 5, '2019-06-20');
+insert into Orders (order_id, book_id, quantity, dispatch_date) values (6, 5, 9, '2009-02-02');
+insert into Orders (order_id, book_id, quantity, dispatch_date) values (7, 5, 8, '2010-04-13');
+
+select book_id, name
+from Books 
+where available_from < date_add('2019-06-23', interval -1 month)
+     and book_id not in (
+        select book_id
+        from Orders o
+        where dispatch_date between date_add('2019-06-23', interval -1 year) and '2019-06-23'
+        group by o.book_id
+        having sum(o.quantity) >= 10
+    )   
+```
+
+스팸으로 보고된 후 제거된 게시물의 일평균 비율
+```mysql
+Create table If Not Exists Actions (user_id int, post_id int, action_date date, action ENUM('view', 'like', 'reaction', 'comment', 'report', 'share'), extra varchar(10));
+create table if not exists Removals (post_id int, remove_date date);
+Truncate table Actions;
+insert into Actions (user_id, post_id, action_date, action, extra) values ('1', '1', '2019-07-01', 'view', null);
+insert into Actions (user_id, post_id, action_date, action, extra) values ('1', '1', '2019-07-01', 'like', null);
+insert into Actions (user_id, post_id, action_date, action, extra) values ('1', '1', '2019-07-01', 'share', null);
+insert into Actions (user_id, post_id, action_date, action, extra) values ('2', '2', '2019-07-04', 'view', null);
+insert into Actions (user_id, post_id, action_date, action, extra) values ('2', '2', '2019-07-04', 'report', 'spam');
+insert into Actions (user_id, post_id, action_date, action, extra) values ('3', '4', '2019-07-04', 'view', null);
+insert into Actions (user_id, post_id, action_date, action, extra) values ('3', '4', '2019-07-04', 'report', 'spam');
+insert into Actions (user_id, post_id, action_date, action, extra) values ('4', '3', '2019-07-02', 'view', null);
+insert into Actions (user_id, post_id, action_date, action, extra) values ('4', '3', '2019-07-02', 'report', 'spam');
+insert into Actions (user_id, post_id, action_date, action, extra) values ('5', '2', '2019-07-03', 'view', null);
+insert into Actions (user_id, post_id, action_date, action, extra) values ('5', '2', '2019-07-03', 'report', 'racism');
+insert into Actions (user_id, post_id, action_date, action, extra) values ('5', '5', '2019-07-03', 'view', null);
+insert into Actions (user_id, post_id, action_date, action, extra) values ('5', '5', '2019-07-03', 'report', 'racism');
+Truncate table Removals;
+insert into Removals (post_id, remove_date) values ('2', '2019-07-20');
+insert into Removals (post_id, remove_date) values ('3', '2019-07-18');
+
+select round(avg(rate), 2) as average_daily_percent from
+(
+    select
+      a.action_date,
+      count(distinct r.post_id)*100.0/count(distinct a.post_id) as rate
+    from Actions a left join Removals r on a.post_id = r.post_id
+    where a.action = 'report' and a.extra = 'spam'
+    group by a.action_date
+) X
+```
+
+
+
+
 
 
 ## 참고
