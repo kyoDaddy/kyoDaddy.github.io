@@ -1003,6 +1003,48 @@ ORDER BY  score;
 ;
 ```
 
+각 사용자 별 최근 세가지 주문.. rank 대체 
+```mysql
+create table if not exists Customers (customer_id int, name varchar(100));
+truncate table Customers;
+insert into Customers(customer_id, name) values (1, 'Winston');
+insert into Customers(customer_id, name) values (2, 'Jonathan');
+insert into Customers(customer_id, name) values (3, 'Annabelle');
+insert into Customers(customer_id, name) values (4, 'Marwan');
+insert into Customers(customer_id, name) values (5, 'Khaled');
+
+create table if not exists Orders (order_id int, order_date date, customer_id int, cost int);
+truncate table Orders;
+insert into Orders (order_id, order_date, customer_id, cost) values (1, '2020-07-31', 1, 30);
+insert into Orders (order_id, order_date, customer_id, cost) values (2, '2020-07-30', 2, 40);
+insert into Orders (order_id, order_date, customer_id, cost) values (3, '2020-07-31', 3, 70);
+insert into Orders (order_id, order_date, customer_id, cost) values (4, '2020-07-29', 4, 100);
+insert into Orders (order_id, order_date, customer_id, cost) values (5, '2020-06-10', 1, 1010);
+insert into Orders (order_id, order_date, customer_id, cost) values (6, '2020-08-01', 2, 102);
+insert into Orders (order_id, order_date, customer_id, cost) values (7, '2020-08-01', 3, 111);
+insert into Orders (order_id, order_date, customer_id, cost) values (8, '2020-08-03', 1, 99);
+insert into Orders (order_id, order_date, customer_id, cost) values (9, '2020-08-08', 2, 32);
+insert into Orders (order_id, order_date, customer_id, cost) values (10, '2020-07-15', 1, 2);
+
+select Y.name as customer_name, X.customer_id, X.order_id, X.order_date
+from
+(
+  select
+    o.order_id,
+    o.customer_id,
+    o.order_date,
+    (select 1 + count(*)
+     from Orders t1
+     where
+     t1.customer_id = o.customer_id
+     and t1.order_date > o.order_date) as rn
+  from
+  Orders o
+) X inner join Customers Y using (customer_id)
+where X.rn <= 3
+order by Y.name, X.customer_id, X.order_date desc
+```
+
 
 ### 기타 문제 풀이
 연속 5일 로그인 사용자 추출
@@ -1449,6 +1491,42 @@ select round(avg(rate), 2) as average_daily_percent from
 ) X
 ```
 
+국내 평균 통화 시간 > 글로벌 평균 통화 시간 -> 제일 큰 국가 추출
+```mysql
+create table if not exists Person (id int, name varchar(100), phone_number varchar(20));
+insert into Person (id, name, phone_number) values (3, 'Jonathan', '051-1234567');
+insert into Person (id, name, phone_number) values (12, 'Elvis', '051-7654321');
+insert into Person (id, name, phone_number) values (1, 'Moncef', '212-1234567');
+insert into Person (id, name, phone_number) values (2, 'Maroua', '212-6523651');
+insert into Person (id, name, phone_number) values (7, 'Meir', '972-1234567');
+insert into Person (id, name, phone_number) values (9, 'Rachel', '972-0011100');
+
+create table Country (name varchar(50), country_code int);
+insert into Country (name, country_code) values ('Peru', 051);
+insert into Country (name, country_code) values ('Israel', 972);
+insert into Country (name, country_code) values ('Morocco', 212);
+insert into Country (name, country_code) values ('Germany', 049);
+insert into Country (name, country_code) values ('Ethiopia', 251);
+
+create table Calls (caller_id int, callee_id int, duration int);
+insert into Calls (caller_id, callee_id, duration) values (1, 9, 33);
+insert into Calls (caller_id, callee_id, duration) values (2, 9, 4);
+insert into Calls (caller_id, callee_id, duration) values (1, 2, 59);
+insert into Calls (caller_id, callee_id, duration) values (3, 12, 102);
+insert into Calls (caller_id, callee_id, duration) values (3, 12, 330);
+insert into Calls (caller_id, callee_id, duration) values (12, 3, 5);
+insert into Calls (caller_id, callee_id, duration) values (7, 9, 13);
+insert into Calls (caller_id, callee_id, duration) values (7, 1, 3);
+insert into Calls (caller_id, callee_id, duration) values (9, 7, 1);
+insert into Calls (caller_id, callee_id, duration) values (1, 7, 7);
+
+SELECT co.name AS country
+FROM Person p 
+JOIN Country co ON SUBSTRING(phone_number,1,3) = LPAD(country_code, 3, 0)
+JOIN Calls c ON p.id IN (c.caller_id, c.callee_id)
+GROUP BY co.name
+HAVING AVG(duration) > (SELECT AVG(duration) FROM Calls)
+```
 
 
 
