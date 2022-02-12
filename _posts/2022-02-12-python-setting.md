@@ -8,17 +8,16 @@ tags: python
 
 
 ## mac (m1)
-
 ### python (3.x) 설치
-```text
+```shell
 $ brew install python
 $ python3 -V
 $ which python3
 $ /opt/homebrew/bin/python3
 ```
 
-### 파이썬 2 -> 3 바라보도록 변경 (only python 3.x)
-```text
+### 파이썬3 바라보도록 변경 (only python 3.x)
+```shell
 $ vi ~/.zshrc
 # 맨아래에 추가
 $ # Only Python3
@@ -31,7 +30,7 @@ $ /opt/homebrew/bin/python3
 ```
 
 ### pyenv, virtualenv로 여러 파이썬 버전 변경하기
-```text
+```shell
 $ brew install pyenv pyenv-virtualenv
 
 $ vi ~/.zshrc
