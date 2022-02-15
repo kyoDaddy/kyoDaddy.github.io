@@ -56,4 +56,5 @@ flushall
 
 ## 참고
 1. [Docker - 도커로 Mariadb 컨테이너 간편하게 설치하기](https://7942yongdae.tistory.com/130)
+2. [redis-cli 명령어 정리](https://freeblogger.tistory.com/10)
 
