@@ -50,6 +50,12 @@ rename kyo_one key_one
 
 # redis-cli 모든 데이터 삭제
 flushall
+
+# redis-cli 카운터 생성
+set test_cnt
+incr test_cnt
+get test_cnt
+
 ```
 
 
