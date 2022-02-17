@@ -1,12 +1,11 @@
 ---
 layout: post
-title:  "testtest"
+title:  "inner peace"
 date:   2022-02-15 21:00
 categories: archives
-tags: python 
+tags: etc 
 ---
 
-test
+마음의 여유를 갖자
 
-## 기타
-1. 참고 레퍼런스
+
