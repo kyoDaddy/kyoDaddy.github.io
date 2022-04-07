@@ -12,15 +12,15 @@ tags: python
 ```text
 mysqlclient==2.1.0
 uWSGI==2.0.20
+uwsgitop==0.11
 ...
-
 ```
 
 2. 도커 이미지 : Dockerfile (원하는 버전을 찾아서 파일 작성한다...왜 늘 새로운 거죠..?)
 ```text
 #Dockerfile
 
-FROM python:3.9 AS builder
+FROM python:3.9.1 AS builder
 
 RUN apt-get update \
 	&& apt-get -y --no-install-recommends install libsasl2-dev \
