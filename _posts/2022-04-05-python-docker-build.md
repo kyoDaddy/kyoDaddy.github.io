@@ -17,9 +17,7 @@ uwsgitop==0.11
 ```
 
 2. 도커 이미지 : Dockerfile (원하는 버전을 찾아서 파일 작성한다...왜 늘 새로운 거죠..?)
-```text
-#Dockerfile
-
+```dockerfile
 FROM python:3.9.1 AS builder
 
 RUN apt-get update \
