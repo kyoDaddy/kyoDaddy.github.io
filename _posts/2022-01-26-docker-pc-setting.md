@@ -58,6 +58,15 @@ get test_cnt
 
 ```
 
+## 도커 이미지 빌드 및 실행
+~~~shell
+# 도커 이미지 빌드 (도커파일명으로 찾아서 빌드)
+$ docker build -f Dockerfile -t build-docker .
+
+# 만든 이미지로 도커 실행 (환경변수 전달)
+docker run -e RDS_CREDENTIAL={\”password\”:\”aa\”bb\”} -e RUN_ENV=dev --name test
+~~~
+
 
 
 ## 참고
