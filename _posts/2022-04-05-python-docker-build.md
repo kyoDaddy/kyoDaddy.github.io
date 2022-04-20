@@ -17,7 +17,8 @@ uwsgitop==0.11
 ```
 
 2. 도커 이미지 : Dockerfile (원하는 버전을 찾아서 파일 작성한다...왜 늘 새로운 거죠..?)
-```dockerfile
+
+~~~dockerfile
 FROM python:3.9.1 AS builder
 
 RUN apt-get update \
@@ -52,7 +53,7 @@ RUN python3 manage.py collectstatic --noinput
 
 CMD ["python",  "manage.py", "runserver", "0.0.0.0:8000"]
 EXPOSE 8000
-```
+~~~
 
 3. 도커 이미지 빌드
 ```shell
